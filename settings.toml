@@ -14,6 +14,7 @@ EXTENSIONS = [
     "flask_wpp_api.ext.commands:init_app",
     "flask_wpp_api.ext.webui:init_app",
     "flask_wpp_api.ext.restapi:init_app",
+    "flask_wpp_api.ext.webwhatsapp:init_app",
 ]
 
 [development]

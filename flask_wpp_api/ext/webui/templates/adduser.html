@@ -1,0 +1,86 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Whatschat{% endblock %}
+
+{% block navbar %}
+<div class="navbar">
+    <div class="navbar-header">
+
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Whatschat</h1>
+    <div class="jumbotron">
+        {% if data['cadastro'] %}
+        <form action="{{url_for('webui.addsession')}}" method="POST">
+            <div class="form-group col-md-4">
+                <div class="control has-icons-left has-icons-right">
+                    <input class="form-control" type="text" name="username" placeholder="Username" />
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="form-check">
+                <p class="control">
+                    <button type="submit" class="btn btn-primary">
+                        Cadastrar
+                    </button>
+                </p>
+            </div>
+        </form>
+        {% endif %}
+        {% if data['message'] %}
+        <form action="{{url_for('webui.sendmessage', username=data["username"])}}" method="POST">
+            <!-- <div class="mb-2">
+                <label for="exampleFormControlInput1" class="form-label">Username</label>
+                <input class="form-control" type="text" id="username" name="username" placeholder="Username" />
+            </div> -->
+            <div class="mb-2">
+                <label for="exampleFormControlInput1" class="form-label">Number</label>
+                <input type="text" class="form-control" id="number" name="number" placeholder="number">
+            </div>
+            <div class="mb-2">
+                <label for="exampleFormControlTextarea1" class="form-label">Text</label>
+                <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+            </div>
+            <div class="form-check">
+                <p class="control">
+                    <button type="submit" class="btn btn-primary">
+                        Cadastrar
+                    </button>
+                </p>
+            </div>
+        </form>
+        {% endif %}
+
+        {% if data['contact'] %}
+            {% for contact in data["contact"] %}
+                <li class="list-group-item">
+                    <p>{{contact}}</p>
+                </li>
+            {% endfor %}
+        {% endif %}
+
+        {% if data['qrcode'] %}
+        <div class="jumbotron">
+            <img alt="Brand" src="{{data['qrcode']}}">
+        </div>
+        {% endif %}
+
+        {% if data['error'] != "" %}
+        <div class="alert alert-danger" role="alert">
+            {{data['error']}}
+        </div>
+        {% endif %}
+
+        {% if data['success'] != ""%}
+        <div class="alert alert-info" role="alert">
+            {{data['success']}}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

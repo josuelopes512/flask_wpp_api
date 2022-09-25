@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+{% block title %}Whatschat{% endblock %}
+
+{% block navbar %}
+<div class="navbar">
+    <div class="navbar-header">
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Whatschat</h1>
+    <div class="jumbotron">
+        <ul class="list-group">
+            {% if sessions %}
+                {% for session in sessions["active"] %}
+                    <li class="list-group-item">
+                        <p>Active: <a href="{{url_for('webui.sendmessage', username=session )}}">{{ session }}</a></p>
+                    </li>
+                {% endfor %}
+                {% for session in sessions["deactively"] %}
+                    <li class="list-group-item">
+                        <p>Disabled: {{ session }}</p>
+                    </li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
