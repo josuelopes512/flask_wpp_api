@@ -1,4 +1,6 @@
-from flask import abort, render_template, request, url_for, redirect
+from flask import (
+    abort, render_template, request, url_for, redirect
+)
 from flask_simplelogin import login_required
 
 from flask_wpp_api.models import Product
@@ -28,8 +30,12 @@ def getusers():
 
 
 def addsession():
-    data = {"qrcode": "", "error": "", "success": "", "message": "",
-            "cadastro": True, "username": "", "contact": ""}
+    data = {
+        "qrcode": "", "error": "",
+        "success": "", "message": "",
+        "cadastro": True,
+        "username": "", "contact": ""
+    }
     error_alert = "Session already exists, please use another username."
     if request.method == 'POST':
         username = request.form['username']
@@ -38,8 +44,10 @@ def addsession():
             'Content-Type': 'application/x-www-form-urlencoded'
         }
         payload = f"id={username}&isLegacy=false"
-        res = req.post('http://127.0.0.1:8000/sessions/add',
-                       headers=headers, data=payload)
+        res = req.post(
+            'http://127.0.0.1:8000/sessions/add',
+            headers=headers, data=payload
+        )
         if res.status_code == 200:
             data_res = res.json()
             data["qrcode"] = data_res["data"]["qr"]
