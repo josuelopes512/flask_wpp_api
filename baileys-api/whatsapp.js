@@ -11,6 +11,9 @@ import makeWASocket, {
     delay,
 } from '@adiwajshing/baileys'
 import axios from "axios";
+import yts from "yt-search";
+import ytdl from "ytdl-core";
+
 import { toDataURL } from 'qrcode'
 import __dirname from './dirname.js'
 import response from './response.js'
@@ -259,19 +262,6 @@ const sendMessage = async (session, receiver, message, delayMs = 1000) => {
 
 const sendAudio = async (session, receiver, message, delayMs = 1000) => {
     try {
-    //     const { url } = message.audio
-
-    //     const response = await axios.get(url, {
-    //         responseType: "arraybuffer",
-    //     });
-    //     const buffer = Buffer.from(response.data, "utf-8");
-    //     const data = {
-    //         audio: {
-    //             url: buffer
-    //         },
-    //         mimetype: message.mimetype
-    //     }
-
         await delay(parseInt(delayMs))
 
         return session.sendMessage(receiver, message)
