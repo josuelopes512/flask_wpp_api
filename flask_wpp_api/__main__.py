@@ -14,7 +14,7 @@ def main():
     if "Windows" in platform.system():
         Thread(target=os.system, args=("start.bat",)).start()
     else:
-        Thread(target=os.system, args=("start.sh",)).start()
+        Thread(target=os.system, args=("sh start.sh",)).start()
     sleep(1)
 
 
