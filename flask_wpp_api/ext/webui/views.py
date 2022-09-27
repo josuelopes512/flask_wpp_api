@@ -6,6 +6,7 @@ from flask_wpp_api.models import Product
 import requests as req
 import json
 
+
 def index():
     products = Product.query.all()
     return render_template("index.html", products=products)
@@ -27,7 +28,9 @@ def getusers():
 
 
 def addsession():
-    data = {"qrcode": "", "error": "", "success": "", "message": "", "cadastro": True, "username":"", "contact": ""}
+    data = {"qrcode": "", "error": "", "success": "", "message": "",
+            "cadastro": True, "username": "", "contact": ""}
+    error_alert = "Session already exists, please use another username."
     if request.method == 'POST':
         username = request.form['username']
         data["username"] = username
@@ -35,15 +38,17 @@ def addsession():
             'Content-Type': 'application/x-www-form-urlencoded'
         }
         payload = f"id={username}&isLegacy=false"
-        res = req.post('http://127.0.0.1:8000/sessions/add', headers=headers, data=payload)
+        res = req.post('http://127.0.0.1:8000/sessions/add',
+                       headers=headers, data=payload)
         if res.status_code == 200:
             data_res = res.json()
             data["qrcode"] = data_res["data"]["qr"]
             return render_template("adduser.html", data=data)
         else:
-            data["error"] = "Session already exists, please use another username."
+            data["error"] = error_alert
             return render_template("adduser.html", data=data)
     return render_template("adduser.html", data=data)
+
 
 def isusername(username):
     res = req.get(f"http://127.0.0.1:8000/sessions/find/{username}")
@@ -51,8 +56,10 @@ def isusername(username):
         return True
     return False
 
+
 def sendmessage(username):
-    data = {"qrcode": "", "error": "", "success": "", "message": True, "cadastro":"", "username": username, "contact": ""}
+    data = {"qrcode": "", "error": "", "success": "", "message": True,
+            "cadastro": "", "username": username, "contact": ""}
     if not isusername(username):
         return redirect(url_for("webui.addsession"))
     if request.method == 'POST':
@@ -68,7 +75,10 @@ def sendmessage(username):
                 "text": message_text
             }
         }
-        res = req.post(f"http://127.0.0.1:8000/chats/send?id={username}", headers=headers, data=json.dumps(payload))
+        res = req.post(
+            f"http://127.0.0.1:8000/chats/send?id={username}",
+            headers=headers, data=json.dumps(payload)
+        )
         print(res.content.decode("utf8"))
         if res.status_code == 200:
             data_res = res.json()
@@ -83,12 +93,15 @@ def sendmessage(username):
             return render_template("adduser.html", data=data)
     return render_template("adduser.html", data=data)
 
+
 def viewcontacts(username):
-    data = {"qrcode": "", "error": "", "success": "", "message": "", "cadastro":"", "username": username, "contact": ""}
+    data = {"qrcode": "", "error": "", "success": "", "message": "",
+            "cadastro": "", "username": username, "contact": ""}
     if not isusername(username):
         return redirect(url_for("webui.addsession"))
 
     return render_template("adduser.html", data=data)
+
 
 @login_required
 def secret():
