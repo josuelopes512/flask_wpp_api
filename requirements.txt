@@ -7,3 +7,4 @@ sqlalchemy-serializer
 dynaconf
 click
 flask-restful
+requests==2.28.1
