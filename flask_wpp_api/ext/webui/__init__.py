@@ -1,15 +1,13 @@
 from flask import Blueprint
 
 from .views import (
-    only_admin, product, secret,
+    # only_admin, product, secret,
     getusers, addsession, sendmessage, viewcontacts
 )
 
 bp = Blueprint("webui", __name__, template_folder="templates")
 
-# bp.add_url_rule("/whatschat/allusers", view_func=getusers)
-# viewcontacts
-bp.add_url_rule("/", view_func=getusers)
+bp.add_url_rule("/", view_func=getusers, endpoint='home')
 bp.add_url_rule("/whatschat", view_func=getusers)
 bp.add_url_rule(
     "/whatschat/addsession",
@@ -27,15 +25,15 @@ bp.add_url_rule(
     methods=["GET", "POST"]
 )
 
-bp.add_url_rule(
-    "/product/<product_id>",
-    view_func=product, endpoint="productview"
-)
-bp.add_url_rule("/secret", view_func=secret, endpoint="secret")
-bp.add_url_rule(
-    "/only_admin",
-    view_func=only_admin, endpoint="onlyadmin"
-)
+# bp.add_url_rule(
+#     "/product/<product_id>",
+#     view_func=product, endpoint="productview"
+# )
+# bp.add_url_rule("/secret", view_func=secret, endpoint="secret")
+# bp.add_url_rule(
+#     "/only_admin",
+#     view_func=only_admin, endpoint="onlyadmin"
+# )
 
 
 def init_app(app):
