@@ -4,56 +4,6 @@ import requests as req
 
 URL_API = os.environ.get('URL_API')
 
-class Chat:
-    def __init__(self):
-        self.headers = {
-            'Content-Type': 'application/json'
-        }
-    
-    def get_chat_list(self, session_id):
-        try:
-            res = req.get(f"{URL_API}/chats?id={session_id}")
-            if res.status_code == 200:
-                data = res.json()
-                return data["data"]
-        except:
-            pass
-        return []
-
-    def get_conversation(self, session_id, number_id):
-        try:
-            res = req.get(f"{URL_API}/chats/{number_id}@s.whatsapp.net?id={session_id}&limit=25")
-            if res.status_code == 200:
-                data = res.json()
-                return data["data"]
-        except:
-            pass
-        return []
-    
-    def send_text(self, session_id, number_id, text):
-        data_res = {}
-        try:
-            payload = {
-                "receiver": f"{number_id}",
-                "message": {
-                    "text": text
-                }
-            }
-            res = req.post(
-                f"{URL_API}/chats/send?id={session_id}", 
-                headers=self.headers, 
-                data=json.dumps(payload)
-            )
-            if res.status_code == 200:
-                data = res.json()
-                data_res['success'] =  data['message']
-            else:
-                data_res['error'] = "Failed to send the message."
-        except:
-            data_res['error'] = "Failed to send the message."
-        return data_res
-        
-
 class Session:
     def __init__(self):
         self.headers = {
@@ -119,3 +69,113 @@ class Session:
         except:
             pass
         return "Session not found."
+
+
+class Chat:
+    def __init__(self):
+        self.headers = {
+            'Content-Type': 'application/json'
+        }
+    
+    def get_chat_list(self, session_id):
+        try:
+            res = req.get(f"{URL_API}/chats?id={session_id}")
+            if res.status_code == 200:
+                data = res.json()
+                return data["data"]
+        except:
+            pass
+        return []
+
+    def get_conversation(self, session_id, number_id):
+        try:
+            res = req.get(f"{URL_API}/chats/{number_id}@s.whatsapp.net?id={session_id}&limit=25")
+            if res.status_code == 200:
+                data = res.json()
+                return data["data"]
+        except:
+            pass
+        return []
+    
+    def send_text(self, session_id, number_id, text):
+        data_res = {}
+        try:
+            payload = {
+                "receiver": f"{number_id}",
+                "message": {
+                    "text": text
+                }
+            }
+            res = req.post(
+                f"{URL_API}/chats/send?id={session_id}", 
+                headers=self.headers, 
+                data=json.dumps(payload)
+            )
+            if res.status_code == 200:
+                data = res.json()
+                data_res['success'] =  data['message']
+            else:
+                data_res['error'] = "Failed to send the message."
+        except:
+            data_res['error'] = "Failed to send the message."
+        return data_res
+
+
+class Group:
+    def __init__(self):
+        self.headers = {
+            'Content-Type': 'application/json'
+        }
+    
+    def get_chat_list(self, session_id):
+        try:
+            res = req.get(f"{URL_API}/groups?id={session_id}")
+            if res.status_code == 200:
+                data = res.json()
+                return data["data"]
+        except:
+            pass
+        return []
+
+    def get_conversation(self, session_id, group_id):
+        try:
+            res = req.get(f"{URL_API}/groups/{group_id}@g.us?id={session_id}&limit=25")
+            if res.status_code == 200:
+                data = res.json()
+                return data["data"]
+        except:
+            pass
+        return []
+    
+    def get_group_metadata(self, session_id, group_id):
+        try:
+            res = req.get(f"{URL_API}/groups/meta/{group_id}@g.us?id={session_id}")
+            if res.status_code == 200:
+                data = res.json()
+                return data["data"]
+        except:
+            pass
+        return []
+    
+    def send_text(self, session_id, group_id, text):
+        data_res = {}
+        try:
+            payload = {
+                "receiver": f"{group_id}@g.us",
+                "message": {
+                    "text": text
+                }
+            }
+            res = req.post(
+                f"{URL_API}/groups/send?id={session_id}", 
+                headers=self.headers, 
+                data=json.dumps(payload)
+            )
+            if res.status_code == 200:
+                data = res.json()
+                data_res['success'] =  data['message']
+            else:
+                data_res['error'] = "Failed to send the message."
+        except:
+            data_res['error'] = "Failed to send the message."
+        return data_res
