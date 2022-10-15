@@ -201,9 +201,13 @@ const getChatList = (sessionId, isGroup = false) => {
 }
 
 const getContactList = (sessionId) => {
-    const filter = '@s.whatsapp.net'
+    const contactsList = getSession(sessionId).store.contacts;
+    var result = [];
 
-    return getSession(sessionId).store.contacts
+    for (var key in contactsList){
+        result.push(contactsList[key])
+    }
+    return result
 }
 
 /**

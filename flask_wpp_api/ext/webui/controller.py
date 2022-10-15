@@ -96,6 +96,16 @@ class Chat:
         except:
             pass
         return []
+
+    def get_contacts_list(self, session_id):
+        try:
+            res = req.get(f"{URL_API}/chats/get-contacts?id={session_id}")
+            if res.status_code == 200:
+                data = res.json()
+                return data["data"]
+        except:
+            pass
+        return []
     
     def send_text(self, session_id, number_id, text):
         data_res = {}

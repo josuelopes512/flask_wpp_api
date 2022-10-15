@@ -4,22 +4,11 @@ from flask import (
 from flask_simplelogin import login_required
 
 from flask_wpp_api.models import Product
-from .controller import Chat, Session
+from .controller import Chat, Session, Group
 
-chat = Chat()
 session = Session()
-
-# def index():
-#     products = Product.query.all()
-#     return render_template("index.html", products=products)
-
-
-# def product(product_id):
-#     product = Product.query.filter_by(id=product_id).first() or abort(
-#         404, "produto nao encontrado"
-#     )
-#     return render_template("product.html", product=product)
-
+chat = Chat()
+group = Group()
 
 def getusers():
     return render_template(
@@ -52,6 +41,10 @@ def addsession():
 def sendmessage(username):
     data = {"qrcode": "", "error": "", "success": "", "message": True,
             "cadastro": "", "username": username, "contact": ""}
+    
+    contacts_list = chat.get_contacts_list(username)
+    data["contact"] = contacts_list
+            
     if request.method == 'POST':
         number = request.form['number']
         message_text = request.form['message']
@@ -60,7 +53,6 @@ def sendmessage(username):
         
         if 'success' in result:
             data["success"] = result['success']
-            pass
         else:
             data["error"] = result['error']
         return render_template("adduser.html", data=data)
@@ -72,17 +64,7 @@ def sendmessage(username):
 def viewcontacts(username):
     data = {"qrcode": "", "error": "", "success": "", "message": "",
             "cadastro": "", "username": username, "contact": ""}
-    if not session.is_session_exists(username):
-        return redirect(url_for("webui.addsession"))
+    result = chat.get_contacts_list(username)
+    data["contact"] = result
     
     return render_template("adduser.html", data=data)
-
-
-# @login_required
-# def secret():
-#     return "This can be seen only if user is logged in"
-
-
-# @login_required(username="admin")
-# def only_admin():
-#     return "only admin user can see this text"
